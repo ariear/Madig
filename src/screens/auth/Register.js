@@ -14,7 +14,11 @@ const Login = ({navigation}) => {
     const handleRegister = async () => {
         try {
             const processCreateUser = await createUserWithEmailAndPassword(auth,fields.email,fields.password)
-            await AsyncStorage.setItem('user', JSON.stringify(processCreateUser.user))
+            await AsyncStorage.setItem('user', JSON.stringify({
+                email: processCreateUser.user.email,
+                name: processCreateUser.user.displayName ? processCreateUser.user.displayName : processCreateUser.user.email,
+                expire: processCreateUser.user.stsTokenManager.expirationTime
+            }))
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
             console.log(error.message);

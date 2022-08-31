@@ -37,17 +37,17 @@ const DrawerNav = () => {
           name="Home" 
           component={HomeScreen}
           options={{ 
-            drawerIcon: ({color}) => {
+            drawerIcon: ({color}) => (
               <Feather name="home" color={color} size={22} />
-            }
+            )
            }}  />
       <Drawer.Screen 
           name="Profile" 
           component={Profile}
           options={{ 
-            drawerIcon: ({color}) => {
+            drawerIcon: ({color}) => (
               <Feather name="user" color={color} size={22} />
-            }
+            )
            }} />
     </Drawer.Navigator>
   )

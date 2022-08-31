@@ -15,7 +15,11 @@ const Login = ({navigation}) => {
     const loginHandle = async () => {
         try {
             const processSignIn = await signInWithEmailAndPassword(auth, fields.email, fields.password)
-            await AsyncStorage.setItem('user', JSON.stringify(processSignIn.user))
+            await AsyncStorage.setItem('user', JSON.stringify({
+                email: processSignIn.user.email,
+                name: processSignIn.user.displayName ? processSignIn.user.displayName : processSignIn.user.email,
+                expire: processSignIn.user.stsTokenManager.expirationTime
+            }))
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
             console.log(error.message);

@@ -7,11 +7,13 @@ import { auth } from '../../firebase/firebase-config';
 import { useEffect, useState } from 'react';
 
 const CustomDrawerContent = (props) => {
-    const [user, setUser ] = useState({})
+    const [user, setUser ] = useState(null)
 
     const getUser = async () => {
         const user = await AsyncStorage.getItem('user')
-        setUser(user)
+        if (user) {
+            setUser(JSON.parse(user))
+        }
     }
 
     const SignOutHandle = async () => {
@@ -33,7 +35,7 @@ const CustomDrawerContent = (props) => {
             <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: '#64A3EC' }} >
                 <View style={style.headerDrawer}>
                     <Image source={require('../../assets/images/icons/person.png')} style={style.photo_profile} />
-                    <Text style={style.username}>Arie Akbarull</Text>
+                    <Text style={style.username}>{user ? user.name : 'Tamu'}</Text>
                 </View>
                 <View style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 10 }}>
                 <DrawerItemList {...props} />
@@ -52,7 +54,7 @@ const CustomDrawerContent = (props) => {
                         color: '#64A3EC',
                         fontWeight: '500',
                         fontSize: 16,
-                        marginRight: 5}}> {user ? 'Sign Out' : 'Sign In'}</Text>
+                        marginRight: 5}}> {user ? 'Keluar' : 'Masuk'}</Text>
                 <Feather name={user ? 'log-out' : 'log-in'} color="#64A3EC" size={22} />
             </View>
             </TouchableWithoutFeedback>
