@@ -44,7 +44,8 @@ const style = StyleSheet.create({
     sapa:{
         fontSize: 24,
         fontWeight: '500',
-        paddingTop: 10
+        paddingTop: 10,
+        marginBottom: 15
     }
 })
 

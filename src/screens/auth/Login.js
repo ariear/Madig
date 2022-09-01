@@ -1,10 +1,17 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback, Image } from "react-native"
 import { auth } from "../../../firebase/firebase-config"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Feather, AntDesign} from 'react-native-vector-icons'
-import { signInWithRedirect , GoogleAuthProvider } from "firebase/auth";
+import * as Google from 'expo-auth-session/providers/google';
+
+const config = {
+    iosClientId: '429155858848-jp1d75o7kuq5vld97ipdo311883fnru3.apps.googleusercontent.com',
+    androidClientId: '429155858848-k746oebpgrdu1vjephadpep9ve6rcacu.apps.googleusercontent.com',
+    scopes: ['profile','email'],
+    permissions: ['public_profile','email','gender','location']
+}
 
 const Login = ({navigation}) => {
     const [fields,setFields] = useState({
@@ -12,12 +19,21 @@ const Login = ({navigation}) => {
         password: ''
     })
 
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        expoClientId: '429155858848-2c1b5n51atidopqoo8sm978n5g876icb.apps.googleusercontent.com',
+        iosClientId: '429155858848-jp1d75o7kuq5vld97ipdo311883fnru3.apps.googleusercontent.com',
+        androidClientId: '429155858848-r7590vlmbv4ibrs9f063lekt82e17r54.apps.googleusercontent.com',
+        webClientId: '429155858848-k746oebpgrdu1vjephadpep9ve6rcacu.apps.googleusercontent.com',
+      });
+
     const loginHandle = async () => {
         try {
             const processSignIn = await signInWithEmailAndPassword(auth, fields.email, fields.password)
             await AsyncStorage.setItem('user', JSON.stringify({
                 email: processSignIn.user.email,
                 name: processSignIn.user.displayName ? processSignIn.user.displayName : processSignIn.user.email,
+                photo_url: processSignIn.user.photoURL ? processSignIn.user.photoURL : null,
+                phone_number: processSignIn.user.phoneNumber ? processSignIn.user.phoneNumber : null,
                 expire: processSignIn.user.stsTokenManager.expirationTime
             }))
             navigation.replace('DrawerNav', {screen: 'Home'})
@@ -26,16 +42,12 @@ const Login = ({navigation}) => {
         }
     }
 
-    const loginGoogleHandle = async () => {
-        try {
-            const provider = new GoogleAuthProvider();
-            const results = await signInWithRedirect(auth,provider)
-            console.log(results);
-            navigation.replace('DrawerNav', {screen: 'Home'})
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { authentication } = response;
+            console.log(authentication);
+            }
+    }, [response]);
     
     return (
         <View style={{ 
@@ -95,7 +107,7 @@ const Login = ({navigation}) => {
                 fontWeight: '500'
              }}>Masuk</Text></TouchableWithoutFeedback>
              <View style={{ width: '80%', borderWidth: 1, borderColor: 'lightgray', marginVertical: 10 }}></View>
-            <TouchableWithoutFeedback onPress={() => loginGoogleHandle()}>
+            <TouchableWithoutFeedback onPress={() => promptAsync()}>
             <View style={{ 
                 backgroundColor: '#54BAB9',
                 width: '80%',

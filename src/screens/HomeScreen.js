@@ -1,6 +1,8 @@
-import { View, Text, StatusBar, TouchableWithoutFeedback, Image, StyleSheet } from "react-native"
+import { View, StatusBar } from "react-native"
+import CardContent from "../components/CardContent"
 import MainTopBar from "../components/MainTopBar"
 import Sapa from "../components/Sapa"
+import Slider from "../components/Slider"
 
 const HomeScreen = ({navigation}) => {
     return (
@@ -9,8 +11,9 @@ const HomeScreen = ({navigation}) => {
          }}>
             <StatusBar barStyle="light-content" backgroundColor="#64A3EC" />
             <MainTopBar navigation={navigation} name="menu.png" />
-
             <Sapa />
+            <Slider />
+            <CardContent />
         </View>
     )
 }
