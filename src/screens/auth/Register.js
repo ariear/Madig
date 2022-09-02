@@ -4,14 +4,20 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback , Image} from "react-native"
 import {Feather, AntDesign} from 'react-native-vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from "../../components/Loading";
 
 const Login = ({navigation}) => {
     const [fields,setFields] = useState({
         email: '',
         password: ''
     })
+    const [loading,setLoading] = useState(false)
 
     const handleRegister = async () => {
+        if (fields.email === '' || fields.password === '') {
+            return false
+        }
+        setLoading(true)
         try {
             const processCreateUser = await createUserWithEmailAndPassword(auth,fields.email,fields.password)
             await AsyncStorage.setItem('user', JSON.stringify({
@@ -19,6 +25,7 @@ const Login = ({navigation}) => {
                 name: processCreateUser.user.displayName ? processCreateUser.user.displayName : processCreateUser.user.email,
                 expire: processCreateUser.user.stsTokenManager.expirationTime
             }))
+            setLoading(false)
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
             console.log(error.message);
@@ -105,6 +112,10 @@ const Login = ({navigation}) => {
                 width: '80%',
                 color: '#64A3EC'
             }}>Sudah punya akun?</Text></TouchableWithoutFeedback>
+            {
+                loading &&
+                <Loading />
+            }
         </View>
     )
 }

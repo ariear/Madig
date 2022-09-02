@@ -7,12 +7,14 @@ import { auth } from '../../firebase/firebase-config';
 import { useEffect, useState } from 'react';
 
 const CustomDrawerContent = (props) => {
-    const [user, setUser ] = useState(null)
+    const [user, setUser ] = useState({})
+    const [isNotFound,setIsNotFound] = useState(true)
 
     const getUser = async () => {
         const user = await AsyncStorage.getItem('user')
         if (user) {
             setUser(JSON.parse(user))
+            setIsNotFound(false)
         }
     }
 
@@ -34,14 +36,14 @@ const CustomDrawerContent = (props) => {
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: '#64A3EC' }} >
                 <View style={style.headerDrawer}>
-                    <Image source={require('../../assets/images/icons/person.png')} style={style.photo_profile} />
-                    <Text style={style.username}>{user ? user.name : 'Tamu'}</Text>
+                    <Image source={{ uri: user.photo_url ? user.photo_url : 'https://firebasestorage.googleapis.com/v0/b/madig-b9821.appspot.com/o/person.png?alt=media&token=1ac82a87-54a8-444d-b07b-225255132a51' }} style={style.photo_profile} />
+                    <Text style={style.username}>{!isNotFound ? user.name : 'Tamu'}</Text>
                 </View>
                 <View style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 10 }}>
                 <DrawerItemList {...props} />
                 </View>
             </DrawerContentScrollView>
-            <TouchableWithoutFeedback onPress={() => user ? SignOutHandle() : props.navigation.navigate('Login')}>
+            <TouchableWithoutFeedback onPress={() => !isNotFound ? SignOutHandle() : props.navigation.navigate('Login')}>
             <View style={{ 
                     paddingVertical: 20,
                     flexDirection: 'row',
@@ -54,8 +56,8 @@ const CustomDrawerContent = (props) => {
                         color: '#64A3EC',
                         fontWeight: '500',
                         fontSize: 16,
-                        marginRight: 5}}> {user ? 'Keluar' : 'Masuk'}</Text>
-                <Feather name={user ? 'log-out' : 'log-in'} color="#64A3EC" size={22} />
+                        marginRight: 5}}> {!isNotFound ? 'Keluar' : 'Masuk'}</Text>
+                <Feather name={!isNotFound ? 'log-out' : 'log-in'} color="#64A3EC" size={22} />
             </View>
             </TouchableWithoutFeedback>
         </View>
