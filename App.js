@@ -7,6 +7,7 @@ import Register from './src/screens/auth/Register';
 import HomeScreen from './src/screens/HomeScreen';
 import CustomDrawerContent from './src/custom/CustomDrawerContent';
 import Profile from './src/screens/Profile';
+import DetailContent from './src/screens/DetailContent';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} >
         <Stack.Screen name="DrawerNav" component={DrawerNav} />
+        <Stack.Screen name="DetailContent" component={DetailContent} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>

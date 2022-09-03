@@ -33,6 +33,8 @@ const Profile = ({navigation}) => {
 
     const updateUser = async () => {
         if (fields.displayName === '') return false
+
+        setLoadingUpload(true)
         try {
             await updateProfile(auth.currentUser,{
                 displayName: fields.displayName
@@ -42,6 +44,7 @@ const Profile = ({navigation}) => {
                 name: fields.displayName
             }))
             
+            setLoadingUpload(false)
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
             console.log(error.message);

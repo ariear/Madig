@@ -12,11 +12,10 @@ const Login = ({navigation}) => {
         password: ''
     })
     const [loading,setLoading] = useState(false)
+    const [errorMessage,setErrorMessage] = useState('')
 
     const handleRegister = async () => {
-        if (fields.email === '' || fields.password === '') {
-            return false
-        }
+        if (fields.email === '' || fields.password === '') return false
         setLoading(true)
         try {
             const processCreateUser = await createUserWithEmailAndPassword(auth,fields.email,fields.password)
@@ -28,7 +27,8 @@ const Login = ({navigation}) => {
             setLoading(false)
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
-            console.log(error.message);
+            setLoading(false)
+            setErrorMessage(error.message)
         }
     }
 
@@ -62,8 +62,8 @@ const Login = ({navigation}) => {
                 <Text style={{ 
                     marginBottom: 5
                  }}>Alamat email</Text>
-                <View style={style.formInput} >
-                    <Feather name="mail" color="#64A3EC" size={22} />
+                <View style={[style.formInput,{borderWidth: errorMessage ? 2 : 0, borderColor: 'red'}]} >
+                    <Feather name="mail" color={errorMessage ? 'red' : '#64A3EC'} size={22} />
                     <TextInput style={{ width: 240, paddingLeft: 10 }} keyboardType="email-address" placeholder="abc@example.com" value={fields.email} onChangeText={(input) => setFields({...fields,email: input})} />
                 </View>
             </View>
@@ -74,11 +74,20 @@ const Login = ({navigation}) => {
                 <Text style={{ 
                     marginBottom: 5
                  }}>Kata sandi</Text>
-                 <View style={style.formInput} >
-                    <Feather name="lock" color="#64A3EC" size={22} />
+                 <View style={[style.formInput, {borderWidth: errorMessage ? 2 : 0, borderColor: 'red'}]} >
+                    <Feather name="lock" color={errorMessage ? 'red' : '#64A3EC'} size={22} />
                     <TextInput style={{ width: 240, paddingLeft: 10 }} secureTextEntry={true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
                  </View>
               </View>
+              {
+                errorMessage &&
+              <Text style={{ 
+                marginBottom: 10,
+                color: 'red',
+                paddingHorizontal: 50,
+                textAlign: 'center'
+               }}>{errorMessage}</Text>
+              }
               <TouchableWithoutFeedback onPress={() => handleRegister()}><Text style={{ 
                 backgroundColor: '#64A3EC',
                 width: '80%',

@@ -1,39 +1,15 @@
-import { onSnapshot } from "firebase/firestore"
-import { useEffect, useState } from "react"
-import { ImageBackground, Text, View } from "react-native"
-import { collContent } from "../../firebase/firebase-config"
+import { TouchableWithoutFeedback , ImageBackground, Text, View } from "react-native"
 
-const CardContent = () => {
-    const [content,setContent] = useState([])
-
-    const getContent = () => {
-        onSnapshot(collContent, (snapshot) => {
-            setContent(snapshot.docs.map(snap => (
-                {...snap.data(),id: snap.id}
-            )))
-        })
-    }
-
-    useEffect(() => {
-        getContent()
-    }, []);
-
+const CardContent = ({navigation, cont}) => {
     return (
-        <View style={{ 
-            paddingVertical: 25,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between'
-         }}>
-            {
-                content.map((cont) => 
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailContent',{id: cont.id})} key={cont.id} >
+                <View style={{ width: '47%' }}>
                 <ImageBackground 
                     source={{ uri: cont.thumbnail }} 
                     imageStyle={{ width: '100%', borderRadius: 10 , opacity: 0.5}} 
-                    resizeMode="cover"
-                    key={cont.id} 
+                    resizeMode="cover" 
                 style={{ 
-                    width: '47%',
+                    width: '100%',
                     height: 80,
                     backgroundColor: '#000000',
                     marginBottom: 15,
@@ -46,9 +22,8 @@ const CardContent = () => {
                         fontSize: 16
                      }}>{cont.title}</Text>
                  </ImageBackground>
-                )
-            }
-        </View>
+                 </View>
+            </TouchableWithoutFeedback>
     )
 }
 

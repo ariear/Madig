@@ -23,9 +23,7 @@ const Login = ({navigation}) => {
       });
 
     const loginHandle = async () => {
-        if (fields.email === '' || fields.password === '') {
-            return false
-        }
+        if (fields.email === '' || fields.password === '') return false
         setIsWrong(false)
         setLoading(true)
         try {
@@ -39,6 +37,7 @@ const Login = ({navigation}) => {
             setLoading(false)
             navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
+            setLoading(false)
             setIsWrong(true)
         }
     }
@@ -96,7 +95,7 @@ const Login = ({navigation}) => {
                     marginBottom: 5
                  }}>Alamat email</Text>
                 <View style={[style.formInput, {borderWidth: isWrong ? 2 : 0, borderColor: 'red'}]} >
-                    <Feather name="mail" color="#64A3EC" size={22} />
+                    <Feather name="mail" color={isWrong ? 'red' : '#64A3EC'} size={22} />
                     <TextInput style={{ width: 240, paddingLeft: 10 }} keyboardType="email-address" placeholder="abc@example.com" value={fields.email} onChangeText={(input) => setFields({...fields,email: input})} />
                 </View>
               </View>
@@ -108,7 +107,7 @@ const Login = ({navigation}) => {
                     marginBottom: 5
                  }}>Kata sandi</Text>
                  <View style={[style.formInput, {borderWidth: isWrong ? 2 : 0, borderColor: 'red'}]} >
-                    <Feather name="lock" color="#64A3EC" size={22} />
+                    <Feather name="lock" color={isWrong ? 'red' : '#64A3EC'} size={22} />
                     <TextInput style={{ width: 240, paddingLeft: 10 }} secureTextEntry={true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
                  </View>
               </View>
