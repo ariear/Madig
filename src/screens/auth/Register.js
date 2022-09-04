@@ -13,6 +13,7 @@ const Login = ({navigation}) => {
     })
     const [loading,setLoading] = useState(false)
     const [errorMessage,setErrorMessage] = useState('')
+    const [isShowPassword ,setIsShowPassword] = useState(false)
 
     const handleRegister = async () => {
         if (fields.email === '' || fields.password === '') return false
@@ -64,7 +65,7 @@ const Login = ({navigation}) => {
                  }}>Alamat email</Text>
                 <View style={[style.formInput,{borderWidth: errorMessage ? 2 : 0, borderColor: 'red'}]} >
                     <Feather name="mail" color={errorMessage ? 'red' : '#64A3EC'} size={22} />
-                    <TextInput style={{ width: 240, paddingLeft: 10 }} keyboardType="email-address" placeholder="abc@example.com" value={fields.email} onChangeText={(input) => setFields({...fields,email: input})} />
+                    <TextInput style={{ width: 220, paddingLeft: 10 }} keyboardType="email-address" placeholder="abc@example.com" value={fields.email} onChangeText={(input) => setFields({...fields,email: input})} />
                 </View>
             </View>
             <View style={{ 
@@ -76,7 +77,8 @@ const Login = ({navigation}) => {
                  }}>Kata sandi</Text>
                  <View style={[style.formInput, {borderWidth: errorMessage ? 2 : 0, borderColor: 'red'}]} >
                     <Feather name="lock" color={errorMessage ? 'red' : '#64A3EC'} size={22} />
-                    <TextInput style={{ width: 240, paddingLeft: 10 }} secureTextEntry={true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
+                    <TextInput style={{ width: 220, paddingLeft: 10 }} secureTextEntry={isShowPassword ? false : true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
+                    <Feather name={isShowPassword ? 'eye' : 'eye-off'} color={errorMessage ? 'red' : '#64A3EC'} size={22} onPress={() => setIsShowPassword(!isShowPassword)}  />
                  </View>
               </View>
               {
