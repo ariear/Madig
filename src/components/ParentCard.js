@@ -1,6 +1,6 @@
 import { onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { ImageBackground, Text, TouchableWithoutFeedback, View } from "react-native"
+import { View } from "react-native"
 import { collContent } from "../../firebase/firebase-config"
 import CardContent from "./CardContent"
 import LoadingCardContent from "./LoadingCardContent"
