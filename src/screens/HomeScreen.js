@@ -1,4 +1,4 @@
-import { View, StatusBar, ScrollView } from "react-native"
+import { StatusBar, ScrollView } from "react-native"
 import ParentCard from "../components/ParentCard"
 import MainTopBar from "../components/MainTopBar"
 import Sapa from "../components/Sapa"

@@ -1,7 +1,8 @@
 import { doc, onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { ScrollView, Text } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import AutoHeightImage from "react-native-auto-height-image"
+import { Video} from 'expo-av';
 import {DbFirestore} from '../../firebase/firebase-config'
 
 const DetailContent = ({route}) => {
@@ -41,12 +42,22 @@ const DetailContent = ({route}) => {
 
              {
                 !loading &&
-                content.imgContent.map((img,index) => 
-                    <AutoHeightImage 
-                        source={{ uri: img }} 
-                        width={300} 
-                        style={{ width: '100%', marginBottom: 20 , borderRadius: 5}} 
-                        key={index} />
+                content.contents.map((img,index) => 
+                    <View key={index} >
+                    {
+                        img.type === 'img' ? 
+                        <AutoHeightImage 
+                            source={{ uri: img.value }} 
+                            width={300} 
+                            style={{ width: '100%', marginBottom: 20 , borderRadius: 5}}  />
+                                :
+                        <Video
+                            source={{ uri: img.value }}
+                            useNativeControls
+                            resizeMode="contain"
+                            style={{ width: '100%', height: 210, marginBottom: 20 , borderRadius: 5}} />
+                    }
+                    </View>
                 )
              }
         </ScrollView>
