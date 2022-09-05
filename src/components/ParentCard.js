@@ -1,6 +1,6 @@
 import { onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import { collContent } from "../../firebase/firebase-config"
 import CardContent from "./CardContent"
 import LoadingCardContent from "./LoadingCardContent"
@@ -8,6 +8,7 @@ import LoadingCardContent from "./LoadingCardContent"
 const ParentCard = ({navigation}) => {
     const [content,setContent] = useState([])
     const [loading,setLoading] = useState(false)
+    const [isNotConnectInet,setisNotConnectInet] = useState(false)
 
     const getContent = () => {
         setLoading(true)
@@ -16,6 +17,8 @@ const ParentCard = ({navigation}) => {
                 {...snap.data(),id: snap.id}
             )))
             setLoading(false)
+        },(error) => {
+            setisNotConnectInet(true)
         })
     }
 
@@ -24,6 +27,15 @@ const ParentCard = ({navigation}) => {
     }, []);
 
     return (
+        <>
+        {
+            isNotConnectInet && <Text style={{ 
+                paddingTop: 20,
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: '500'
+             }}>Sepertinya anda tidak terhubung ke internet</Text>
+        }
         <View style={{ 
             paddingVertical: 25,
             flexDirection: 'row',
@@ -39,6 +51,7 @@ const ParentCard = ({navigation}) => {
                 )
             }
         </View>
+        </>
     )
 }
 

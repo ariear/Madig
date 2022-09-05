@@ -22,7 +22,7 @@ const CustomDrawerContent = (props) => {
         try {
             await signOut(auth)
             await AsyncStorage.removeItem('user')
-            DevSettings.reload()
+            props.navigation.replace('DrawerNav', {screen: 'Home'})
         } catch (error) {
             console.log(error.message);
         }

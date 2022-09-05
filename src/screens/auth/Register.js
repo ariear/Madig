@@ -2,7 +2,7 @@ import { useState } from "react"
 import { auth } from "../../../firebase/firebase-config"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback , Image} from "react-native"
-import {Feather, AntDesign} from 'react-native-vector-icons'
+import {Feather} from 'react-native-vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from "../../components/Loading";
 
@@ -75,9 +75,11 @@ const Login = ({navigation}) => {
                 <Text style={{ 
                     marginBottom: 5
                  }}>Kata sandi</Text>
-                 <View style={[style.formInput, {borderWidth: errorMessage ? 2 : 0, borderColor: 'red'}]} >
+                 <View style={[style.formInput, {borderWidth: errorMessage ? 2 : 0, borderColor: 'red'},{justifyContent: 'space-between'}]} >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Feather name="lock" color={errorMessage ? 'red' : '#64A3EC'} size={22} />
-                    <TextInput style={{ width: 220, paddingLeft: 10 }} secureTextEntry={isShowPassword ? false : true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
+                    <TextInput style={{ paddingLeft: 10, width: '75%' }} secureTextEntry={isShowPassword ? false : true} placeholder="··········" value={fields.password} onChangeText={(input) => setFields({...fields,password: input})} />
+                    </View>
                     <Feather name={isShowPassword ? 'eye' : 'eye-off'} color={errorMessage ? 'red' : '#64A3EC'} size={22} onPress={() => setIsShowPassword(!isShowPassword)}  />
                  </View>
               </View>
@@ -100,25 +102,6 @@ const Login = ({navigation}) => {
                 fontWeight: '500'
              }}>Buat</Text></TouchableWithoutFeedback>
              <View style={{ width: '80%', borderWidth: 1, borderColor: 'lightgray', marginVertical: 10 }}></View>
-            <TouchableWithoutFeedback>
-            <View style={{ 
-                backgroundColor: '#54BAB9',
-                width: '80%',
-                borderRadius: 10,
-                paddingVertical: 15,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: 5
-             }}>
-                <AntDesign name="google" size={22} color="#ffff" />
-                <Text style={{ 
-                    color: '#ffff',
-                    fontWeight: '500',
-                    marginLeft: 10
-                }}>Buat dengan Google</Text>
-            </View>
-             </TouchableWithoutFeedback>
              <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')} ><Text style={{ 
                 width: '80%',
                 color: '#64A3EC'

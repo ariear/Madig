@@ -11,9 +11,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#64A3EC"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,9 +20,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#ffffff"
       },
-      "package": "com.arieakbar.Madig"
+      "package": "com.stmbalung.Madig"
     },
     "web": {
       "favicon": "./assets/favicon.png"
