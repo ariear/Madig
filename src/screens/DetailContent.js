@@ -5,8 +5,9 @@ import AutoHeightImage from "react-native-auto-height-image"
 import { Video} from 'expo-av';
 import {DbFirestore} from '../../firebase/firebase-config'
 import LoadingDetailContent from "../components/LoadingDetailContent";
+import Feather from 'react-native-vector-icons/Feather'
 
-const DetailContent = ({route}) => {
+const DetailContent = ({route, navigation}) => {
     const [content,setContent] = useState({})
     const [loading,setLoading] = useState(true)
     const [isNotConnectInet,setisNotConnectInet] = useState(false)
@@ -32,15 +33,21 @@ const DetailContent = ({route}) => {
     }, []);
 
     return (
-        <ScrollView style={{ 
+        <View style={{ 
             paddingHorizontal: 15
          }}>
+            <View style={{ 
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: 15
+             }}>
+            <Feather name="arrow-left" size={33} style={{ marginRight: 10 }} onPress={() => navigation.goBack()} />
             <Text style={{ 
-                paddingTop: 15,
                 fontWeight: '500',
-                fontSize: 30,
-                marginBottom: 20
+                fontSize: 22
              }}>{content.title}</Text>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 60 }}>
              {
                 isNotConnectInet &&
             <Text style={{ 
@@ -72,7 +79,8 @@ const DetailContent = ({route}) => {
                     </View>
                 )
              }
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
 
