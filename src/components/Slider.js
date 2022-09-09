@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView , Image, Dimensions} from 'react-native';
+import { View, SafeAreaView , Image, Dimensions} from 'react-native';
+import { doc, getDoc } from "firebase/firestore";
 import Carousel from 'react-native-snap-carousel';
+import { DbFirestore } from '../../firebase/firebase-config';
 
 export default class Slider extends React.Component {
 
@@ -8,12 +10,7 @@ export default class Slider extends React.Component {
         super(props);
         this.state = {
           activeIndex:0,
-          carouselItems: [
-            'https://images.unsplash.com/photo-1659535880591-78ed91b35158?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1661965884568-a8e5f3f8fd59?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1657299156594-50426d5125a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwyNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1661993749894-7771a581f7de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60'
-        ]
+        dataCarousel: []
       }
     }
 
@@ -34,6 +31,19 @@ export default class Slider extends React.Component {
         )
     }
 
+    async getSlideData(){
+      const slidedataRef = doc(DbFirestore,'slider','tTmViDmh62Gwx4woJdqU')
+      const slidedataSnap = await getDoc(slidedataRef)
+      this.setState({
+        ...this.state,
+        dataCarousel: slidedataSnap.data().image
+      })
+    }
+
+    componentDidMount() { 
+      this.getSlideData()
+     }
+
     render() {
         return (
           <SafeAreaView style={{flex: 1 }}>
@@ -41,7 +51,7 @@ export default class Slider extends React.Component {
                 <Carousel
                   layout={"default"}
                   ref={ref => this.carousel = ref}
-                  data={this.state.carouselItems}
+                  data={this.state.dataCarousel}
                   sliderWidth={320}
                   itemWidth={300}
                   renderItem={this._renderItem}
